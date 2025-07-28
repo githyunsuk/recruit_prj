@@ -26,7 +26,7 @@
             <!-- 기본 메뉴 그룹 -->
             <div class="menu-group">
             <span sec:authorize="hasRole('SUPER') ">
-                <a href="/admin_dashboard" class="menu-item">대시보드</a>
+                <a th:href="@{/admin/admin_dashboard}" class="menu-item">대시보드</a>
                 <a th:href="@{/admin/admin_list}" class="menu-item">관리자명단</a>
                 </span>
             </div>
@@ -35,8 +35,8 @@
             <div class="menu-group">
             <div sec:authorize="hasRole('회원관리팀') or hasRole('SUPER')">
                 <div class="menu-item main-menu">회원관리</div>
-                <a href="/admin_member" class="menu-item sub-menu">회원목록</a>
-                <a href="/admin_resume" class="menu-item sub-menu">이력서관리</a>
+                <a th:href="@{/admin/admin_member}" class="menu-item sub-menu">회원목록</a>
+                <a th:href="@{/admin/admin_resume}" class="menu-item sub-menu">이력서관리</a>
                 </div>
             </div>
 
@@ -44,7 +44,7 @@
             <div class="menu-group">
             <div sec:authorize="hasRole('기업관리팀') or hasRole('SUPER')">
                 <div class="menu-item main-menu">기업관리</div>
-                <a href="/admin_corp" class="menu-item sub-menu">기업목록</a>
+                <a th:href="@{/admin/admin_corp}" class="menu-item sub-menu">기업목록</a>
                 <a th:href="@{/admin/admin_review}" class="menu-item sub-menu">리뷰관리</a>
                 <a th:href="@{/admin/admin_jobPosting}" class="menu-item sub-menu">공고관리</a>
             </div>

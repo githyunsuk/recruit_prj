@@ -71,7 +71,7 @@ input[type="submit"] {
 
 <th:block th:replace="fragments/adminHeader :: adminHeader"></th:block>
 <div class="main">
-<form action="/admin_resume_search">
+<form action="/admin/admin_resume_search">
 <span>이력서번호</span>
 <span><input type="text" id="resume_seq" name="resume_seq"/></span>
 <span>이름</span>
@@ -96,7 +96,7 @@ input[type="submit"] {
     <td th:text="${r['NAME']}"></td>
     <td th:text="${r['EMAIL']}"></td>
     <td>
-      <a th:href="@{/admin_resume/detail(resume_seq=${r['RESUME_SEQ']})}" 
+      <a th:href="@{/admin/admin_resume/detail(resume_seq=${r['RESUME_SEQ']})}" 
            th:text="${r['TITLE']}"></a>
     </td>
 </tr>

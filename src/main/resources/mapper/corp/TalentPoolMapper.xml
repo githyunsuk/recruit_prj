@@ -567,12 +567,10 @@ WHERE  M.CORP_NO = #{corpNo}
 		  r.resume_seq ASC
 		</when>
          <otherwise>
-  				 ORDER BY o.READ_AT DESC
+  				 ORDER BY o.READ_AT DESC 
          </otherwise>
      </choose>
 </select>
-
-
 
 
 </mapper>

@@ -143,18 +143,18 @@
 </table>
 
 <span th:if="${member.activeStatus==0}">
-<form action="/admin_sanction">
+<form action="/admin/admin_sanction">
 <input type="hidden" name="email" th:value="${member.email}"/>
 <input type="button" value="제재하기" onclick="submit();"/>
 </form>
 </span>
 <span th:if="${member.activeStatus==1}">
-<form action="/admin_sanction_cancel">
+<form action="/admin/admin_sanction_cancel">
 <input type="hidden" name="email" th:value="${member.email}"/>
 <input type="button" value="제재 취소하기" onclick="submit();"/>
 </form>
 </span>
-<a href="/admin_member">
+<a href="/admin/admin_member">
   <input type="button" value="뒤로가기" />
 </a>
 

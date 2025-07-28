@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import kr.co.sist.admin.corp.CorpService;
@@ -13,6 +14,7 @@ import kr.co.sist.corp.dto.CorpEntity;
 import kr.co.sist.util.CipherUtil;
 
 @Controller
+@RequestMapping("/admin")
 public class AdminCorpController {
 	@Autowired
 	private CorpService cs;

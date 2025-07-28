@@ -113,7 +113,7 @@ form input[type="submit"]:hover {
 
 <th:block th:replace="fragments/adminHeader :: adminHeader"></th:block>
 <div class="main">
-<form action="/admin_corp_search">
+<form action="/admin/admin_corp_search">
 <span>사업번호<input type="text" id="corpNo" name="corpNo"/></span>
 <span>이름</span>
 <span><input type="text" id="name" name="name"/></span><br>
@@ -139,7 +139,7 @@ form input[type="submit"]:hover {
 <tbody>
 <tr th:each="c:${corp}">
 <td class="num-cell">
-  <form id="detail" action="/admin_corp_detail" >
+  <form id="detail" action="/admin/admin_corp_detail" >
     <input type="hidden" name="corpNo" th:value="${c.corpNo}" />
   <a href="#" onclick="document.getElementById('detail').submit();" th:text="${c.corpNo}"></a>
   </form>

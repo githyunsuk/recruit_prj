@@ -289,7 +289,7 @@ public class ResumeService {
 		// --------------------
 		
 		//배포시 사용
-		String resourcePath = saveDir + "/images/profileImg";
+		String resourcePath = saveDir;
 		
 
 		//UUID로 파일명 설정(중복 방지)

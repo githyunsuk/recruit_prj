@@ -109,7 +109,7 @@
 
 <div class="container">
 <h2>회원 제재하기</h2>
-<form action="/send_sanction">
+<form action="/admin/send_sanction">
 <table>
 <tr>
 <td>이름</td>
@@ -137,6 +137,17 @@
 $(function(){
 });
 
+</script>
+<script th:inline="javascript">
+/*<![CDATA[*/
+  var errorMsg = /*[[${errorMsg}]]*/ null;
+  var successMsg = /*[[${successMsg}]]*/ null;
+  if (errorMsg != null) {
+    alert(errorMsg);
+  } else if (successMsg != null) {
+    alert(successMsg);
+  }
+/*]]>*/
 </script>
 </body>
 </html>
