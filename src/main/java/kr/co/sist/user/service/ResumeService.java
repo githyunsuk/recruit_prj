@@ -284,12 +284,9 @@ public class ResumeService {
 
 		
 		// 상대 경로 위해 사용
-//		String projectPath = new File("").getAbsolutePath(); // 현재 프로젝트 루트
-//		String resourcePath = projectPath + "/src/main/resources/static/images/profileImg";
-		// --------------------
+		String projectPath = new File("").getAbsolutePath(); // 현재 프로젝트 루트
+		String resourcePath = projectPath + "/src/main/resources/static/images/profileImg";
 		
-		//배포시 사용
-		String resourcePath = saveDir;
 		
 
 		//UUID로 파일명 설정(중복 방지)

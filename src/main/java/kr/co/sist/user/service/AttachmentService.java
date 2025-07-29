@@ -64,12 +64,10 @@ public class AttachmentService {
 		attachment.setCreatedAt(now.toString());
 
 		//상대 경로 위해 사용
-//		String projectPath = new File("").getAbsolutePath(); // 현재 프로젝트 루트
-//		String resourcePath = projectPath + "/src/main/resources/static/attachment";
+		String projectPath = new File("").getAbsolutePath(); // 현재 프로젝트 루트
+		String resourcePath = projectPath + "/src/main/resources/static/attachment";
 		//--------------------
 		
-		//배포시 사용
-		String resourcePath = saveDir + "/attachment";
 		
 		attachmentRepos.save(attachment);
 		attachment.setCreatedAt(attachment.getCreatedAt().substring(0, 10));

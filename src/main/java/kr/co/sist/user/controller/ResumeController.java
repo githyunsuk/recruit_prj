@@ -205,10 +205,8 @@ public class ResumeController {
 		String profileImg = resumeData.getResume().getImage();
 		if (profileImg != null && !profileImg.isEmpty()) {
 			// 이미지 경로를 PDF에서 인식할 수 있도록 설정
-//			String imagePath = "/images/profileImg/" + profileImg;
+			String imagePath = "/images/profileImg/" + profileImg;
 			
-			//배포시 사용
-			String imagePath = saveDir + "/images/profileImg/" + profileImg;
 			map.put("profileImagePath", imagePath);
 		}
 		map.put("user", user);

@@ -416,7 +416,6 @@ public class ApplicantController {
 				String profileImg = resume.getImage();
 				if (profileImg != null && !profileImg.isEmpty()) {
 					String imagePath = "/images/profileImg/" + profileImg;
-//				String imagePath = saveDir + "/images/profileImg/" + profileImg;
 					map.put("profileImagePath", imagePath);
 				}
 
