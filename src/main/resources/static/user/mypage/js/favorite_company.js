@@ -48,7 +48,7 @@ async function loadMoreCompanies() {
 
 			card.innerHTML = `
        		<div class="image-wrapper">
-         	<img src="/images/Ssangyong.jpg" alt="기업 이미지">
+			<img src="/images/corpimg/${posting.corpLogo}" alt="기업 이미지">
         	</div>
         	<div class="announcement-title">
           	<strong>${company.corpNm}</strong>

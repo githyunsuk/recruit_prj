@@ -52,7 +52,7 @@ async function loadMorePostings() {
 
 			card.innerHTML = `
        		<div class="image-wrapper">
-         	<img src="/images/Ssangyong.jpg" alt="기업 이미지">
+			<img src="/images/corpimg/${posting.corpImg}" alt="기업 이미지">
         	</div>
         	<div class="dday-badge ${getBadgeClass(posting.dday)}">
           	<span>${posting.ddayDisplay}</span>

@@ -486,29 +486,60 @@ WHERE  M.CORP_NO = #{corpNo}
     m.gender,
     m.birth,
     SUBSTR(m.road_address, 1, 2) AS shortAddress,
-    e.school_name AS finalEducation,
-	(	SELECT education_type FROM EDUCATION_HISTORY WHERE resume_seq = r.resume_seq
-	 AND education_history_seq = (
-	     SELECT MAX(education_history_seq)
-	     FROM EDUCATION_HISTORY
-	     WHERE resume_seq = r.resume_seq) ) AS educationType,
-	     
-     ( SELECT  FLOOR(SUM(MONTHS_BETWEEN(
-        TO_DATE(NVL(c.end_date, TO_CHAR(SYSDATE, 'YYYY-MM')), 'YYYY-MM'), TO_DATE(c.start_date, 'YYYY-MM') )))
-    FROM CAREER c
-    WHERE c.resume_seq = r.resume_seq ) AS totalCareer,
+    (
+      SELECT school_name
+      FROM EDUCATION_HISTORY
+      WHERE resume_seq = r.resume_seq
+      AND education_history_seq = (
+        SELECT MAX(education_history_seq)
+        FROM EDUCATION_HISTORY
+        WHERE resume_seq = r.resume_seq
+      )
+    ) AS finalEducation,
     
-    (   SELECT LISTAGG(pc.position_name, ', ') WITHIN GROUP (ORDER BY pc.position_name)
-    FROM RESUME_POSITION_CODE rpc
-    JOIN POSITION_CODE pc ON rpc.position_seq = pc.position_seq
-    WHERE rpc.resume_seq = r.resume_seq ) AS desiredPositions,
+    (
+      SELECT education_type
+      FROM EDUCATION_HISTORY
+      WHERE resume_seq = r.resume_seq
+      AND education_history_seq = (
+        SELECT MAX(education_history_seq)
+        FROM EDUCATION_HISTORY
+        WHERE resume_seq = r.resume_seq
+      )
+    ) AS educationType,
     
-    LISTAGG(DISTINCT t.stack_name, ', ') WITHIN GROUP (ORDER BY t.stack_name) AS techStacks,
+    (
+      SELECT FLOOR(SUM(MONTHS_BETWEEN(
+        TO_DATE(NVL(c.end_date, TO_CHAR(SYSDATE, 'YYYY-MM')), 'YYYY-MM'),
+        TO_DATE(c.start_date, 'YYYY-MM')
+      )))
+      FROM CAREER c
+      WHERE c.resume_seq = r.resume_seq
+    ) AS totalCareer,
     
-    LISTAGG(DISTINCT ai.activity_name, ', ') WITHIN GROUP (ORDER BY ai.end_date DESC) AS certifications,
+    (
+      SELECT LISTAGG(pc.position_name, ', ') WITHIN GROUP (ORDER BY pc.position_name)
+      FROM RESUME_POSITION_CODE rpc
+      JOIN POSITION_CODE pc ON rpc.position_seq = pc.position_seq
+      WHERE rpc.resume_seq = r.resume_seq
+    ) AS desiredPositions,
+    
+    (
+      SELECT LISTAGG(DISTINCT t.stack_name, ', ') WITHIN GROUP (ORDER BY t.stack_name)
+      FROM RESUME_TECH_STACK rst
+      JOIN TECH_STACK t ON rst.tech_stack_seq = t.tech_stack_seq
+      WHERE rst.resume_seq = r.resume_seq
+    ) AS techStacks,
+    
+    (
+      SELECT LISTAGG(DISTINCT ai.activity_name, ', ') WITHIN GROUP (ORDER BY ai.end_date DESC)
+      FROM ADDITIONAL_INFO ai
+      WHERE ai.resume_seq = r.resume_seq
+      AND ai.record_type = '자격증'
+    ) AS certifications,
     
     CASE WHEN MAX(sc.resume_scrap_seq) IS NOT NULL THEN 'Y' ELSE 'N' END AS isScrapped,
-	o.READ_AT AS readAt,
+    o.READ_AT AS readAt,
     r.resume_seq AS resumeSeq,
     m.corp_no AS corpNo,
     m.email AS email,
@@ -519,24 +550,13 @@ WHERE  M.CORP_NO = #{corpNo}
   JOIN
     MEMBER m ON r.email = m.email
   LEFT JOIN
-    EDUCATION_HISTORY e ON r.resume_seq = e.resume_seq
-  LEFT JOIN
-    CAREER c ON r.resume_seq = c.resume_seq
-  LEFT JOIN
-    ADDITIONAL_INFO ai ON r.resume_seq = ai.resume_seq AND ai.record_type = '자격증'
-  LEFT JOIN
-    RESUME_TECH_STACK rst ON r.resume_seq = rst.resume_seq
-  LEFT JOIN
-    TECH_STACK t ON rst.tech_stack_seq = t.tech_stack_seq
-  LEFT JOIN
-    POSITION_CODE p ON r.resume_seq = p.position_seq
-  LEFT JOIN
     RESUME_SCRAP sc ON r.resume_seq = sc.resume_seq
   LEFT JOIN (
     SELECT resume_seq, MAX(read_at) AS read_at
     FROM OPEN_RESUME
     GROUP BY resume_seq
-	) o ON r.resume_seq = o.resume_seq
+  ) o ON r.resume_seq = o.resume_seq
+
   WHERE
     r.resume_seq IN
     <foreach item="resumeSeq" collection="resumeSeqList" open="(" separator="," close=")">
@@ -546,31 +566,32 @@ WHERE  M.CORP_NO = #{corpNo}
   GROUP BY
     r.resume_seq,
     m.name, m.gender, m.birth,
-    e.school_name, m.road_address,
+    m.road_address,
     m.corp_no, m.email, r.created_at, o.READ_AT
 
- 	<choose>
-		<when test="sortBy == 'education'">
-		  ORDER BY
-		    CASE educationType
-		      WHEN '대학원(박사)' THEN 5
-		      WHEN '대학원(석사)' THEN 4
-		      WHEN '대학(4년)'   THEN 3
-		      WHEN '대학(2,3년)' THEN 2
-		      WHEN '고등학교'     THEN 1
-		      ELSE 0
-		    END ${order},
-		  r.resume_seq ASC
-		</when>
-		<when test="sortBy == 'career'">
-		  ORDER BY totalCareer ${order} NULLS LAST,
-		  r.resume_seq ASC
-		</when>
-         <otherwise>
-  				 ORDER BY o.READ_AT DESC 
-         </otherwise>
-     </choose>
+  <choose>
+    <when test="sortBy == 'education'">
+      ORDER BY
+        CASE educationType
+          WHEN '대학원(박사)' THEN 5
+          WHEN '대학원(석사)' THEN 4
+          WHEN '대학(4년)'   THEN 3
+          WHEN '대학(2,3년)' THEN 2
+          WHEN '고등학교'     THEN 1
+          ELSE 0
+        END ${order},
+      r.resume_seq ASC
+    </when>
+    <when test="sortBy == 'career'">
+      ORDER BY totalCareer ${order} NULLS LAST,
+      r.resume_seq ASC
+    </when>
+    <otherwise>
+      ORDER BY o.READ_AT DESC
+    </otherwise>
+  </choose>
 </select>
+
 
 
 </mapper>
